@@ -2,8 +2,9 @@
 # run_pipeline.sh
 
 # This script contains the step by step parts of the bulk RNA-seq analysis.
-# This script is not meant to be executed and reproduce all the resuts, 
+# This script is not meant to be executed and reproduce all the results, 
 # instead, each step is supposed to be run independently.
+# The scripts assumes that you current directory is bulk_RNAseq/.
 
 ### 1. Fastq trimming and mapping
 bash workflow/1.fastq_trim_and_map.sh
