@@ -8,11 +8,11 @@
 ### 1. Fastq trimming and mapping
 bash workflow/1.fastq_trim_and_map.sh
 
-### 2. TE classification
-bash workflow/2.make_TE_classification.sh
+### 2. Gene and TE counts
+bash workflow/2.make_gene_and_TE_counts.sh
 
-### 3. Gene and TE counts
-bash workflow/3.make_gene_and_TE_counts.sh
+### 3. TE classification
+bash workflow/3.make_TE_classification.sh
 #(include the merge defrag step as well)
 
 ### 4. DE analysis
