@@ -14,8 +14,6 @@ bash workflow/2.make_gene_and_TE_counts.sh
 
 ### 3. TE classification
 bash workflow/3.make_TE_classification.sh
-#(include the merge defrag step as well)
-# Merge telescope counts: /home/qrovira/Projects/ZF_GRCz11_TEs/results/20_09_13_TEdefrag_DET/merge_Teles_counts/merge_Teles_counts_defrag.py
 
 ### 4. DE analysis
 bash workflow/4.run_DE_analysis.sh
