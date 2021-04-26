@@ -9,31 +9,35 @@
 #    - In the same script incorporate the extended 3' UTRs
 #  - Merge telescope counts based on defrag TEs.
 
-one_code_to_find_them_all.pl
 
 ### Get de-fragmented annotations
 # To reconstructs fragmented repeats and full-length LTR elements from TE annotations we used the
 # tool onecodetofindthemall.pl from Bailly-Bechet et al., 2014. DOI: https://doi.org/10.1186/1759-8753-5-13
 # The output of this tool should be named danRer11.nonalt.fa.out.elem_sorted.csv
 # and placed in the ./data direcotry.
+# A 2 column file with the length of the consensus sequence for each TE is also necessary: ./data/tes.lengths
 
 # We then clean the output of onecodetofindthemall.pl to discard large TEs that have been joined
 # based on the reference TE length.
 
-time python clean_OCTFTA_output.py \
-  --te_gtf /home/qrovira/Projects/ZF_GRCz11_TEs/data/19_11_19_TE_annotations_Jon/danRer11.TEtrans_uID.subClass.wredundant.annot_categ.PCg.gtf \
-  --input /home/qrovira/Projects/ZF_GRCz11_TEs/data/19_11_19_TE_annotations_Jon/defragmented/danRer11.nonalt.fa.out.elem_sorted.csv \
-  --te_length /home/qrovira/Projects/ZF_GRCz11_TEs/data/19_11_19_TE_annotations_Jon/defragmented/tes.lengths \
+TE_GTF="./data/danRer11.TEtrans_uID.gtf"
+time python ./scripts/clean_OCTFTA_output.py \
+  --te_gtf ./data/danRer11.TEtrans_uID.gtf \
+  --input ./data/danRer11.nonalt.fa.out.elem_sorted.csv \
+  --te_length ./data/tes.lengths \
   --te_length_cutoff 2 \
-  --output /home/qrovira/Projects/ZF_GRCz11_TEs/results/20_08_18_TEdefrag_overlap_DET/danRer11.TEtrans_uID.subClass.wredundant.annot_categ.PCg.dfrag.c2.gtf
+  --output ./data/danRer11.TEtrans_uID.dfrag.gtf
 # Transform to BED
-time python make_BED_from_clean_OCTFTA_GTF.py \
-  --gtf /home/qrovira/Projects/ZF_GRCz11_TEs/results/20_08_18_TEdefrag_overlap_DET/danRer11.TEtrans_uID.subClass.wredundant.annot_categ.PCg.dfrag.c2.gtf \
-  --bed /home/qrovira/Projects/ZF_GRCz11_TEs/results/20_08_18_TEdefrag_overlap_DET/danRer11.TEtrans_uID.subClass.wredundant.annot_categ.PCg.dfrag.c2.bed
+time python ./scripts/make_BED_from_clean_OCTFTA_GTF.py \
+  --gtf ./data/danRer11.TEtrans_uID.dfrag.gtf \
+  --bed ./data/danRer11.TEtrans_uID.dfrag.bed
+
 
 
 ### Run stringtie
+# In order to have more sequencing depth, replicates were merged before transcriptome assembly.
 # Merge BAMs
+
 
 # Run Stringtie (only with the good parameters)
 # /home/qrovira/Projects/ZF_GRCz11_TEs/results/20_05_18_White2017_Stringtie/run_Stringtie.sh
