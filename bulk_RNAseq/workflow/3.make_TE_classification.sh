@@ -1,15 +1,6 @@
 #!/bin/bash
 # 3.make_TE_classification.sh
 
-# Steps
-#  - Get defrag file and parse it as necessary. 
-#  - Run stringtie to get extended 3' UTRs
-#    - Merge BAMs
-#  - Run read-through categorization of TEs (R, ChipSeeker, ...)
-#    - In the same script incorporate the extended 3' UTRs
-#  - Merge telescope counts based on defrag TEs.
-
-
 ### Get de-fragmented annotations
 # To reconstructs fragmented repeats and full-length LTR elements from TE annotations we used the
 # tool onecodetofindthemall.pl from Bailly-Bechet et al., 2014. DOI: https://doi.org/10.1186/1759-8753-5-13
