@@ -86,11 +86,10 @@ saveRDS(object,file="URD_object_all_dr11_trimmed_082520.rds")
 object <- readRDS("URD_object_all_dr11_trimmed_082520.rds")
 object<-calcDM(object,knn=200,sigma.use=11) 
 saveRDS(object@dm, file="all_dr11_dm11.rds")
-dm.12<-readRDS("all_dr11_dm12.rds")
-object<-importDM(object, dm.12)
+
 stage.colors <- c("#CCCCCC", RColorBrewer::brewer.pal(9, "Set1")[9], RColorBrewer::brewer.pal(12, "Paired")[c(9, 10, 7, 8, 5, 6, 3, 4, 1, 2)])
 
-plotDimArray(object=object, reduction.use= "dm", dims.to.plot=1:18, label = "stage.nice", plot.title = "", outer.title = "STAGE -Diffusion Map Sigma 16", legend = F, alpha = 0.3, discrete.colors = stage.colors)
+plotDimArray(object=object, reduction.use= "dm", dims.to.plot=1:11, label = "stage.nice", plot.title = "", outer.title = "STAGE -Diffusion Map Sigma 11", legend = F, alpha = 0.3, discrete.colors = stage.colors)
 root.cells <-rownames(object@meta)[object@meta$STAGE == "ZFHIGH"]
 #do the flood
 flood.result <- floodPseudotime(object, root.cells=root.cells, n=150, minimum.cells.flooded=2, verbose=T)
@@ -98,8 +97,8 @@ flood.result <- floodPseudotime(object, root.cells=root.cells, n=150, minimum.ce
 saveRDS(flood.result, file ="flood-dm-11-dr11-local.rds")
 
 #check the result
-floods.dm12 <-lapply(list.files(path="./", pattern="flood-dm-12-dr11-local",full.names=T), readRDS)
-object <-floodPseudotimeProcess(object, floods.dm12, floods.name="pseudotime", max.frac.NA=0.4, pseudotime.fun=mean, stability.div=20)
+floods.dm11 <-lapply(list.files(path="./", pattern="flood-dm-11-dr11-local",full.names=T), readRDS)
+object <-floodPseudotimeProcess(object, floods.dm11, floods.name="pseudotime", max.frac.NA=0.4, pseudotime.fun=mean, stability.div=20)
 pseudotimePlotStabilityOverall(object)
 
 #inspect pseudotime
@@ -111,7 +110,7 @@ gg.data <- cbind(object@pseudotime, object@meta[rownames(object@pseudotime), ])
 #plot
 ggplot(gg.data, aes(x = pseudotime, color = HPFSTAGE, fill = HPFSTAGE)) + geom_density(alpha = 0.4) + theme_bw()
 
-saveRDS(object, file="object_3_withDMandPT_dm12.rds")
+saveRDS(object, file="object_3_withDMandPT_dm11.rds")
 #####################################################################
 #URD3 determining tips
 library(URD)
@@ -614,7 +613,7 @@ object.built.11 <- treeForceRotateCoords(object.built.10, seg ="35", angle= -3, 
 object.built.11 <- treeForceRotateCoords(object.built.11, seg ="35", angle= 0, axis = "x", around.cell =10, throw.out.cells =0, pseudotime= "pseudotime")
 object.built.11 <- treeForceRotateCoords(object.built.11, seg ="35", angle= 3, axis = "y", around.cell =10, throw.out.cells =0, pseudotime= "pseudotime")
 
-setwd("/Volumes/Horseman/URD/")
+
 library(rgl)
 library(gridExtra)
 library(RColorBrewer)
