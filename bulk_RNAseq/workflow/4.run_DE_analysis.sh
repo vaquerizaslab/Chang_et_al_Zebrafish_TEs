@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 # 4.run_DE_analysis.sh
 
 ### Run DESeq2 on Telescope counts together with gene counts

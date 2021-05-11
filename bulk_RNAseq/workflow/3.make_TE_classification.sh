@@ -182,8 +182,6 @@ Rscript ./scripts/make_TE_categories.R --te_gtf ${TE_GTF_DFRAG/.gtf/.annot.gtf} 
 ### Merge telescope counts
 # Join the TE counts (telescope) based on the 
 # defrag_transcript_id of the defrag TE annotations.
-TELES_DIR="/home/qrovira/Projects/ZF_GRCz11_TEs/data/20_04_23_White2017_Telescope_stranded/merged_techRep"
-TE_GTF_DIR="/home/qrovira/Projects/ZF_GRCz11_TEs/results/20_09_13_TEdefrag_DET/TEdefrag_annot"
 TE_GTF_DFRAG="./data/danRer11.TEtrans_uID.dfrag.classified.gtf"
 #
 # fwd - fwd
