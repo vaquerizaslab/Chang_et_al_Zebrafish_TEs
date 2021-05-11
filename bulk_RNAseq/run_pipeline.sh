@@ -24,7 +24,4 @@ bash workflow/5.TE_clustering.sh
 ### 6. Enrichment
 bash workflow/6.TE_enrichment.sh
 
-### 7. Generate figure plots
-bash workflow/7.figure_plots.sh
-
 ####################
