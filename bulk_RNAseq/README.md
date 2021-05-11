@@ -1,6 +1,6 @@
 # Bulk RNA-seq analysis code for Chang et al. 2021
 
-These analysis include the follwing steps:
+This analysis includes the following steps:
 * Mapp reads
 * Count gene and TEs
 * TE classification
