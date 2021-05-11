@@ -1,12 +1,12 @@
 # Bulk RNA-seq analysis code for Chang et al. 2021
 
-Intro on what is done here:
+These analysis include the follwing steps:
 * Mapp reads
 * Count gene and TEs
 * TE classification
-* DE analysis
+* TE DE analysis
 * Clustering
-* Enrichment
+* TE Enrichment
 
 ### Structure
 The code should be reproduced following the steps on the `run_pipeline.sh` script, which calls the scripts for each specific step of the analysis. The rest of the scripts are save in the `scripts/` directory. 
@@ -47,10 +47,3 @@ _rep_5_R2.fastq.gz
 i.e. `dome_rep_3_R1.fastq.gz` & `dome_rep_3_R2.fastq.gz`
 
 Large publicly available files are not included and should be downloaded independently.
-
-
-### Software requirements
-List here the Softwares and R/Python packages used, and their verions:
-(Update the list while I'm building up the run_pipeline.sh file)
-
-

@@ -1,6 +1,3 @@
-Change this to our zenodo repo when possible
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4542753.svg)](https://doi.org/10.5281/zenodo.4542753)
-
 # Analysis code for Chang et al. 2021
 
 This repository contains the necessary code to reproduce the analysis performed in Chang et al. 2021, '[A genomic portrait of zebrafish transposable elements and their spatiotemporal embryonic expression](https://www.biorxiv.org/content/10.1101/2021.04.08.439009v1.full)'.
@@ -37,4 +34,4 @@ The code to reproduce the scRNA-seq analysis can be found in the directory `scRN
 
 
 ### Contact
-If you have any question regarding the code, please open an issue or contact XXX@XXX.
+If you have any question regarding the code, please open an issue or contact us.
