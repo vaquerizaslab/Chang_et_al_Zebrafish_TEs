@@ -4,7 +4,7 @@ Code for the heatmap (Fig. 4A)
 **\#this is the code for the analysis of single cell sequencing in the
 manuscript entitled “A genomic portrait of zebrafish transposable
 elements and their spatiotemporal embryonic expression”**<br> \#\#Code
-for the heatmap<br> \#\#grep 42 TE markers identified from Seurat
+for the heatmap<br> \#\#grep 34 TE markers identified from Seurat
 (blastula/gastrula/segmentation\*\* batchcorrected\_AE.txt)
 
 ``` r
