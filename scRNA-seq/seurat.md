@@ -7,7 +7,7 @@ elements and their spatiotemporal embryonic expression”** <br>
 \#\#create cell meta
 
 ``` bash
-head -1 filtered_clean.txt | sed 's/\t/\n/g' | awk '{print $1,$1}' | sed 's/\./\t/2' | sed 's/_/\t/2' | awk -v OFS='\t' '{print $1,$3}' > cell_meta.txt
+head -1 filtered_clean_new_annot2.txt | sed 's/\t/\n/g' | awk '{print $1,$1}' | sed 's/\./\t/2' | sed 's/_/\t/2' | awk -v OFS='\t' '{print $1,$3}' > cell_meta.txt
 ```
 
 \#\#Seurat
