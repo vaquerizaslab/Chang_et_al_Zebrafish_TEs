@@ -163,29 +163,23 @@ pbmc.integrated <- JackStraw(pbmc.integrated, reduction = "pca",num.replicate =1
 pbmc.integrated <- ScoreJackStraw(pbmc.integrated, dims = 1:80)
 JackStrawPlot(pbmc.integrated, dims = 1:80)
 
-pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:43)
+pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:50)
 pbmc.integrated <- FindClusters(pbmc.integrated, resolution =1.2) 
-pbmc.integrated <- RunUMAP(pbmc.integrated, dims = 1:43)
+pbmc.integrated <- RunUMAP(pbmc.integrated, dims = 1:50)
 DimPlot(pbmc, reduction = "umap", label =T, label.size=4)#,group.by="orig.ident"
 FeaturePlot(pbmc.integrated, features = c("ENSDARG00000068255","ENSDARG00000022813","ENSDARG00000014373"))
 
 pbmc.list
 AE<-AverageExpression(object = pbmc.integrated)
 apply(AE$RNA,2,sum)
-write.table(AE$RNA,file="blastula_r1.2_dm43_batchcorrected_AE.txt",sep="\t",quote=F,row.names=T)
+write.table(AE$RNA,file="blastula_r1.2_dm50_batchcorrected_AE.txt",sep="\t",quote=F,row.names=T)
 
-pbmc.integrated.markers <- FindAllMarkers(pbmc.integrated, min.pct = 0.1, logfc.threshold = 0.25, return.thresh=0.05)
-pbmc.markers2<-pbmc.integrated.markers[which(pbmc.integrated.markers[,5]<0.05),]
-
-write.table(pbmc.markers2,file="blastula_r1.2_dm43_batchcorrected_markers.txt",sep="\t",quote=F,row.names=F)
-saveRDS(pbmc.integrated,file="blastula_r1.2_dm43_batchcorrected_0817.rds")
 
 ##gastrula
 nfeatures = 3000, anchor dims = 1:30
-pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:103)
-pbmc.integrated <- FindClusters(pbmc.integrated, resolution =1.5) 
-42 clusters
+pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:90)
+pbmc.integrated <- FindClusters(pbmc.integrated, resolution =3) 
 
 ##segmentation
-nfeatures = 3000, anchor dims = 1:30, dim63 r1.5
+nfeatures = 3000, anchor dims = 1:30, dim60 r2
 ```
