@@ -15,12 +15,14 @@ head -1 filtered_clean.txt | sed 's/\t/\n/g' | awk '{print $1,$1}' | sed 's/\./\
 ``` r
 library(dplyr)
 library(Seurat)
-setwd("/workdir/nc499/raw/NRT/filtered")
-pbmc.data <- read.csv("filtered_clean.txt", sep = "\t", row.names = 1, header = T )
+setwd("/workdir/nc499/raw/new_annot/dge/filtered")
+pbmc.data <- read.csv("filtered_clean_new_annot2.txt", sep = "\t", row.names = 1, header = T )
 pbmc <- CreateSeuratObject(pbmc.data, project = "all", min.cells = 3, min.features = 100)#change the min.features
+dim(pbmc) 
+
 
 #remove MT
-MT<-read.delim("MT_genes_0130.txt")
+MT<-read.delim("MT_genes_0130.txt", header=TRUE)
 all(MT %in% rownames(pbmc))
 
 pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, features = MT$genenames)
@@ -28,14 +30,17 @@ pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, features = MT$genenames)
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 
 pbmc <- subset(pbmc, subset = nFeature_RNA > 100 & percent.mt < 45 )
+dim(pbmc)
 
 #add stages
 stages=read.table("cell_stages.txt", sep="\t", header=FALSE,row.names=1)
 pbmc<-AddMetaData(pbmc, stages, col.name="stages")
+head(pbmc@meta.data)
 
 #add batch data
-cellbatch=read.table("cell_meta.txt", sep="\t", header=TRUE,row.names=1)
+cellbatch=read.table("cell_meta.txt", sep="\t", header=FALSE,row.names=1)
 pbmc<-AddMetaData(pbmc, cellbatch, col.name="batch")
+head(pbmc@meta.data)
 
 #separate batches
 pbmc.list <- SplitObject(pbmc, split.by = "batch")
@@ -46,6 +51,8 @@ for (i in 1:length(pbmc.list)) {
                                          nfeatures = 5000, verbose = TRUE)
 }
 
+#options(future.globals.maxSize = 10000 * 1024^2)
+
 pbmc.anchors <- FindIntegrationAnchors(object.list = pbmc.list, anchor.features=5000, dims = 1:40)
 pbmc.integrated <- IntegrateData(anchorset = pbmc.anchors, dims = 1:40)
 DefaultAssay(pbmc.integrated) <- "integrated"
@@ -53,24 +60,25 @@ pbmc.integrated <- ScaleData(pbmc.integrated, verbose = FALSE)
 
 
 pbmc.integrated <- RunPCA(pbmc.integrated, npcs = 300)
-pbmc.integrated <- JackStraw(pbmc.integrated, reduction = "pca",num.replicate =600,dims = 300 ) #num.replicate = 600, dims = 300
+pbmc.integrated <- JackStraw(pbmc.integrated, reduction = "pca",num.replicate =100,dims = 150) #num.replicate = 600, dims = 300
 
 pbmc.integrated <- ScoreJackStraw(pbmc.integrated, dims = 1:150)
 
 JackStrawPlot(pbmc.integrated, dims = 1:150)
 
 ElbowPlot(pbmc.integrated, ndims = 150)
-pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:114)
-pbmc.integrated <- FindClusters(pbmc.integrated, resolution =5.6) #default= resolution =0.5
+pbmc.integrated <- FindNeighbors(pbmc.integrated, dims = 1:143) 
+pbmc.integrated <- FindClusters(pbmc.integrated, resolution =5.8) #default= resolution =0.5, old 5.6
 #head(Idents(pbmc), 5)
 
-pbmc.integrated <- RunUMAP(pbmc.integrated, dims = 1:114)
+pbmc.integrated <- RunUMAP(pbmc.integrated, dims = 1:143)
 
-DimPlot(pbmc.integrated, reduction = "umap", label =T,label.size=2)#group.by="orig.ident",, cols = viridis(28)
+DimPlot(pbmc.integrated, reduction = "umap", label =T,label.size=3,group.by="orig.ident", cols = viridis(28))#group.by="orig.ident",, cols = viridis(28)
 
 FeaturePlot(pbmc.integrated, features = c("ENSDARG00000068255","ENSDARG00000022813","ENSDARG00000014373"))
 FeaturePlot(pbmc.integrated, features = c(
-  "DNA2-8-DR","DNA6-10-DR","Tx1-13-DR","Tx1-58-DR"))
+  "BHIKHARI-3-LTR-DR","BHIKHARI-5-LTR-DR","BHIKHARI-LTR","ERV1-3-I-DR"),
+  cols = c("honeydew3","red1"),pt.size=0.3,min.cutoff=0)
 #neural
 FeaturePlot(pbmc.integrated, features = c(
   "ENSDARG00000003411", "ENSDARG00000038867", "ENSDARG00000068567", "ENSDARG00000101919", "ENSDARG00000043923", "ENSDARG00000077467"
@@ -100,14 +108,15 @@ pbmc.integrated@meta.data$stages <- factor(pbmc.integrated@meta.data$stages, lev
 DimPlot(pbmc.integrated,reduction = "umap",group.by="stages", cols = viridis(12,alpha=0.5, direction = -1))#,group.by="orig.ident",, label =T, label.size=2
 #
 
-saveRDS(pbmc.integrated,file="all_dr11_dm114r5.6_batchMT_0817.rds")
+saveRDS(pbmc.integrated,file="all_dr11_dm143r5.8_batchMT_0724.rds")
 
 
 #find markers
-pbmc.integrated.markers <- FindAllMarkers(pbmc.integrated, min.pct = 0.1, logfc.threshold = 0.25, return.thresh=0.05)
-pbmc.markers2<-pbmc.integrated.markers[which(pbmc.integrated.markers[,5]<0.05),]
+pbmc.integrated.markers.20 <- FindAllMarkers(pbmc.integrated, min.pct=0.2, min.diff.pct=0.2, logfc.threshold = 0.25, return.thresh=0.05, only.pos=TRUE) 
+pbmc.markers.20.2<-pbmc.integrated.markers.20[which(pbmc.integrated.markers.20[,5]<0.05),]
 
-write.table(pbmc.markers2,file="all_r5.6_pc114_batchcorrectedMT_markers0817_0.1.txt",sep="\t",quote=F,row.names=F)
+write.table(pbmc.markers.20.2,file="all_r5.8_dim143_batchcorrectedMT_markers0724_0.2_pos_0.2diff.txt",sep="\t",quote=F,row.names=F)
+
 ```
 
 \#\#stage heatmap <br> \#\#separate stages
